@@ -10,7 +10,7 @@ WORKDIR /usr/src/app
 COPY . /usr/src/app
 
 # Install all dependencies
-RUN pip install -r requirments.txt
+RUN pip install -r /usr/src/app/requirements.txt
 
 # Expose the port
 EXPOSE 5000
