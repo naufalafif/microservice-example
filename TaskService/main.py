@@ -42,14 +42,16 @@ def get_task(task: Task):
     )
     return response.dicts
 
+
 @app.delete("/user/{user_id}")
 def delete_task_by_user(user_id: int):
     result = ModelTask.delete().where(ModelTask.user == user_id).execute()
     response = BaseResponse()
-    response.update("status", True).update("message", "Task Successfully Deleted").update(
-        "data", result
-    )
+    response.update("status", True).update(
+        "message", "Task Successfully Deleted"
+    ).update("data", result)
     return response.dicts
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=5000)
