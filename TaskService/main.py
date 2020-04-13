@@ -23,13 +23,7 @@ def index():
 
 @app.get("/task")
 def get_task():
-    result = []
-    with dbcon.atomic() as transaction:
-        try:
-            result = list(ModelTask.select().dicts())
-        except ErrorSavingData:
-            transaction.rollback()
-
+    result = list(ModelTask.select().dicts())
     response = BaseResponse()
     response.update("status", True).update("message", "Task Data").update(
         "data", result
@@ -39,7 +33,7 @@ def get_task():
 
 @app.post("/task")
 def get_task(task: Task):
-    print(Task)
+    result = None
     user, name, description = task.user, task.name, task.description
     result = ModelTask.insert(user=user, name=name, description=description).execute()
     response = BaseResponse()
@@ -48,6 +42,14 @@ def get_task(task: Task):
     )
     return response.dicts
 
+@app.delete("/user/{user_id}")
+def delete_task_by_user(user_id: int):
+    result = ModelTask.delete().where(ModelTask.user == user_id).execute()
+    response = BaseResponse()
+    response.update("status", True).update("message", "Task Successfully Deleted").update(
+        "data", result
+    )
+    return response.dicts
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=5000)

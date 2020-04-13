@@ -24,7 +24,6 @@ class BaseResponse:
             self.message = value
         else:
             self.others[key] = value
-
         return self
 
     def delete(self, key):
