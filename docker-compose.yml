@@ -4,20 +4,17 @@ services:
   tasks:
     build:
       context: ./TaskService
-      # dockerfile: Dockerfile
   api:
     build:
       context: ./ApiGateway
-      # dockerfile: Dockerfile
     environment:
       - "TASK_API=http://tasks:5000"
     depends_on:
       - tasks
     ports:
       - "3000:3000"
-  # frontend:
-  #   build:
-  #     context: ./FrontendApplication
-  #     dockerfile: app.dockerfile
-  #   ports:
-  #     - "8080:80"
+  frontend:
+    build:
+      context: ./Frontend
+    ports:
+      - "8080:80"
