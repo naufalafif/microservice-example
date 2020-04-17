@@ -1,9 +1,15 @@
 <template>
 <el-row :gutter="20">
   <el-col :span="12" :offset="6">
-    <el-input placeholder="Enter to save" v-model="new_task" clearable @keypress.native.enter="addTaskHandler()">
-    </el-input>
-
+    <el-row :gutter="10">
+      <el-col :span="8">
+        <el-input placeholder="Name, enter to save" ref="name" v-model="new_task.name" clearable @keypress.native.enter="addTaskHandler()"></el-input>
+      </el-col>
+      <el-col :span="16">
+        <el-input placeholder="Description, enter to save" v-model="new_task.description" clearable @keypress.native.enter="addTaskHandler()"></el-input>
+      </el-col>
+    </el-row>
+    
     <el-table
       :data="tasks"
       style="width: 100%">
@@ -25,16 +31,18 @@
 
 <script>
 
-import { fetchList } from '@/api/task'
+import { fetchList, addRecord } from '@/api/task'
 
 export default {
   name: 'Home',
   data() {
     return {
-      new_task: null,
+      new_task: {
+        name: "",
+        description: ""
+      },
       /*
       task: [{
-        id: int
         name: str,
         description: str,
         done: bool
@@ -45,28 +53,33 @@ export default {
     }
   },
   created(){
-    fetchList().then(res => {
-      res.data.data.forEach(task => {
-        this.addTask(task)
-      });
-    }).catch(err => {
-      console.log(err)
-    })
+    this.getTasks()
   },
   methods: {
+    getTasks(){
+      fetchList().then(res => {
+        this.tasks = res.data.data
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    resetObject(object){
+      Object.keys(object).forEach(key => {
+        object[key] = ""
+      })
+    },
     async addTaskHandler(){
       await this.addTask({
-        id: Math.random(),
-        name: this.new_task,
-        description: 'temporary',
-        done: false
+        name: this.new_task.name,
+        description: this.new_task.description
       })
-      this.new_task = null
+      this.resetObject(this.new_task)
     },
     async addTask(task){
-      let { id, name, description, done } = task
-      this.tasks.push({
-        id, name, description, done
+      addRecord(task).then(res => {
+        console.log(res)
+        this.$refs.name.focus()
+        this.getTasks()
       })
     }
   }
