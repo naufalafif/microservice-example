@@ -11,7 +11,6 @@ database.initialize()
 class Task(BaseModel):
     name: str
     description: str
-    user: int
 
 
 @app.get("/")
@@ -34,8 +33,8 @@ def get_task():
 @app.post("/task")
 def get_task(task: Task):
     result = None
-    user, name, description = task.user, task.name, task.description
-    result = ModelTask.insert(user=user, name=name, description=description).execute()
+    name, description = task.name, task.description
+    result = ModelTask.insert(name=name, description=description).execute()
     response = BaseResponse()
     response.update("status", True).update("message", "Task Successfully Added").update(
         "data", result
@@ -43,9 +42,9 @@ def get_task(task: Task):
     return response.dicts
 
 
-@app.delete("/user/{user_id}")
-def delete_task_by_user(user_id: int):
-    result = ModelTask.delete().where(ModelTask.user == user_id).execute()
+@app.delete("/task/{task_id}")
+def delete_task(task_id: int):
+    result = ModelTask.delete().where(ModelTask.id == task_id).execute()
     response = BaseResponse()
     response.update("status", True).update(
         "message", "Task Successfully Deleted"
