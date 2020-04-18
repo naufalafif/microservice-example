@@ -12,7 +12,7 @@ you can install run application using docker-compose
 1️⃣ Docker
 execute command below
 
-    $ docker-compose up
+``$ docker-compose up``
 
 or you can install this repo application manually using existing package list file
 
@@ -22,19 +22,24 @@ this application was build using **Python3.6, Python Pipenv,** **NodeJS 12.6.2**
 
 
 - initialize python environment & install packages using pipenv by executing command 
-    $ cd TaskService && pipenv install
+ 
+  ``$ cd TaskService && pipenv install``
 - install nodejs packages by executing command
-    $ cd TaskService && yarn && cd ../ApiGateway && yarn
+  
+  ``$ cd TaskService && yarn && cd ../ApiGateway && yarn``
 
 if all packages are installed you can run application by run it all separately
 
 
 1. **TaskService**
-    $ cd TaskService && pipenv run python main.py
+    
+    ``$ cd TaskService && pipenv run python main.py``
 2. **ApiGateway**
-    $ cd ApiGateway && yarn start
+    
+    ``$ cd ApiGateway && yarn start``
 3. **Frontend**
-    $ cd Frontend && yarn serve
+    
+    ``$ cd Frontend && yarn serve``
 
 
 ## Information
